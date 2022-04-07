@@ -6,6 +6,9 @@
   "repository": "https://github.com/peBetrator/vroom",
   "author": "maxnegal",
   "license": "MIT",
+  "scripts": {
+    "dev": "npx nodemon server.js"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.3",
