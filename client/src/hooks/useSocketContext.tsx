@@ -13,7 +13,11 @@ const SocketContext = createContext({} as SocketContextValue);
 
 const useSocketContext = () => useContext(SocketContext);
 
-const socket = io('http://localhost:5000');
+const socket = io(
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:5000'
+    : 'https://vroom-web-client.herokuapp.com'
+);
 
 const ContextProvider = ({ children }: ContextProviderPropTypes) => {
   const [stream, setStream] = useState<MediaStream | null>(null);
