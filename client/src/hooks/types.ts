@@ -17,6 +17,10 @@ export type SocketContextValue = {
   stream: MediaStream | null;
   name: string;
   setName: (name: string) => void;
+  isMicOn: boolean;
+  toggleMic: () => void;
+  isVideoOn: boolean;
+  toggleVideo: () => void;
   callEnded: boolean;
   me: string;
   callUser: (id: string) => void;

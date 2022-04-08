@@ -1,10 +1,9 @@
-import { useContext } from 'react';
 import { Button } from '@material-ui/core';
 
-import { SocketContext } from '../hooks';
+import { useSocketContext } from '../hooks';
 
 export default function Notifications(): React.ReactElement | null {
-  const { answerCall, call, callAccepted } = useContext(SocketContext);
+  const { answerCall, call, callAccepted } = useSocketContext();
 
   if (call.isReceivingCall && !callAccepted) {
     return (

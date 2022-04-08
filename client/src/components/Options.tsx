@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import {
   Button,
   Container,
@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Assignment, Phone, PhoneDisabled } from '@material-ui/icons';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import { SocketContext } from '../hooks';
+import { useSocketContext } from '../hooks';
 import { OptionsPropTypes } from './types';
 
 export default function Options({
@@ -20,7 +20,7 @@ export default function Options({
   const [idToCall, setIdToCall] = useState('');
 
   const { me, callAccepted, name, setName, callEnded, leaveCall, callUser } =
-    useContext(SocketContext);
+    useSocketContext();
   const styles = useStyles();
 
   return (
@@ -104,7 +104,7 @@ const useStyles = makeStyles(theme => ({
   },
   container: {
     width: '600px',
-    margin: '35px 0',
+    margin: '10px 0',
     padding: 0,
     [theme.breakpoints.down('xs')]: {
       width: '80%',

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import Peer from 'simple-peer';
 import { io } from 'socket.io-client';
 
@@ -9,6 +9,8 @@ import {
 } from './types';
 
 const SocketContext = createContext({} as SocketContextValue);
+
+const useSocketContext = () => useContext(SocketContext);
 
 const socket = io('http://localhost:5000');
 
@@ -21,19 +23,14 @@ const ContextProvider = ({ children }: ContextProviderPropTypes) => {
   const [callEnded, setCallEnded] = useState(false);
 
   const [name, setName] = useState('');
+  const [isMicOn, setIsMicOn] = useState(false);
+  const [isVideoOn, setIsVideoOn] = useState(false);
 
   const myVideo = useRef<HTMLVideoElement | null>(null);
   const userVideo = useRef<HTMLVideoElement | null>(null);
   const connectionRef = useRef<Peer.Instance | null>(null);
 
   useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then(currentStream => {
-        setStream(currentStream);
-        myVideo.current!.srcObject = currentStream;
-      });
-
     socket.on('me', id => setMe(id));
 
     socket.on('callUser', ({ from, name: callerName, signal }) => {
@@ -98,6 +95,50 @@ const ContextProvider = ({ children }: ContextProviderPropTypes) => {
     window.location.reload();
   };
 
+  const toggleMic = () => {
+    if (!isVideoOn && isMicOn) {
+      // if both audio and video have to be disabled don't getUserMedia()
+      (myVideo.current!.srcObject as MediaStream)
+        .getAudioTracks()
+        .forEach(track => track.stop());
+
+      setIsMicOn(!isMicOn);
+      setStream(null);
+      myVideo.current!.srcObject = null;
+      return;
+    }
+
+    navigator.mediaDevices
+      .getUserMedia({ video: isVideoOn, audio: !isMicOn })
+      .then(currentStream => {
+        setIsMicOn(!isMicOn);
+        setStream(currentStream);
+        myVideo.current!.srcObject = currentStream;
+      });
+  };
+
+  const toggleVideo = () => {
+    if (!isMicOn && isVideoOn) {
+      // if both audio and video have to be disabled don't getUserMedia()
+      (myVideo.current!.srcObject as MediaStream)
+        .getVideoTracks()
+        .forEach(track => track.stop());
+
+      setIsVideoOn(!isVideoOn);
+      setStream(null);
+      myVideo.current!.srcObject = null;
+      return;
+    }
+
+    navigator.mediaDevices
+      .getUserMedia({ audio: isMicOn, video: !isVideoOn })
+      .then(currentStream => {
+        setIsVideoOn(!isVideoOn);
+        setStream(currentStream);
+        myVideo.current!.srcObject = currentStream;
+      });
+  };
+
   return (
     <SocketContext.Provider
       value={{
@@ -108,6 +149,10 @@ const ContextProvider = ({ children }: ContextProviderPropTypes) => {
         stream,
         name,
         setName,
+        isMicOn,
+        toggleMic,
+        isVideoOn,
+        toggleVideo,
         callEnded,
         me,
         callUser,
@@ -120,4 +165,4 @@ const ContextProvider = ({ children }: ContextProviderPropTypes) => {
   );
 };
 
-export { ContextProvider, SocketContext };
+export { ContextProvider, useSocketContext };

@@ -1,1 +1,1 @@
-export { ContextProvider, SocketContext } from './useSocketContext';
+export { ContextProvider, useSocketContext } from './useSocketContext';

@@ -1,7 +1,7 @@
 import { Typography, AppBar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Notifications, Options, VideoPlayer } from './components';
+import { MuteButtons, Notifications, Options, VideoPlayer } from './components';
 
 export default function App(): React.ReactElement {
   const styles = useStyles();
@@ -13,6 +13,7 @@ export default function App(): React.ReactElement {
         </Typography>
       </AppBar>
       <VideoPlayer />
+      <MuteButtons />
       <Options>
         <Notifications />
       </Options>
