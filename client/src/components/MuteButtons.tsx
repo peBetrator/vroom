@@ -1,11 +1,25 @@
 import { Container, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Mic, MicOff, Videocam, VideocamOff } from '@material-ui/icons';
+import {
+  Mic,
+  MicOff,
+  Videocam,
+  VideocamOff,
+  ScreenShare,
+  StopScreenShare,
+} from '@material-ui/icons';
 
 import { useSocketContext } from '../hooks';
 
 export default function MuteButtons(): React.ReactElement {
-  const { isMicOn, isVideoOn, toggleMic, toggleVideo } = useSocketContext();
+  const {
+    isMicOn,
+    isVideoOn,
+    isScreenShOn,
+    toggleMic,
+    toggleVideo,
+    toggleScreenSharing,
+  } = useSocketContext();
   const styles = useStyles();
 
   return (
@@ -51,6 +65,28 @@ export default function MuteButtons(): React.ReactElement {
           onClick={toggleMic}
         >
           <MicOff fontSize="large" />
+        </IconButton>
+      )}
+
+      {isScreenShOn ? (
+        <IconButton
+          color="primary"
+          aria-label="stop screen share"
+          component="span"
+          title="Stop Screen Share"
+          onClick={toggleScreenSharing}
+        >
+          <ScreenShare fontSize="large" />
+        </IconButton>
+      ) : (
+        <IconButton
+          color="secondary"
+          aria-label="screen share"
+          component="span"
+          title="Share Screen"
+          onClick={toggleScreenSharing}
+        >
+          <StopScreenShare fontSize="large" />
         </IconButton>
       )}
     </Container>

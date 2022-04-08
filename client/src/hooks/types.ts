@@ -24,6 +24,8 @@ export type SocketContextValue = {
   toggleMic: () => void;
   isVideoOn: boolean;
   toggleVideo: () => void;
+  isScreenShOn: boolean;
+  toggleScreenSharing: () => void;
   callEnded: boolean;
   me: string;
   callUser: (id: string) => void;

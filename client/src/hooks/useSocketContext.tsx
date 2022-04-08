@@ -25,6 +25,7 @@ const ContextProvider = ({ children }: ContextProviderPropTypes) => {
 
   const [isMicOn, setIsMicOn] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(false);
+  const [isScreenShOn, setIsScreenShOn] = useState(false);
 
   const myVideo = useRef<HTMLVideoElement | null>(null);
   const userVideo = useRef<HTMLVideoElement | null>(null);
@@ -141,6 +142,27 @@ const ContextProvider = ({ children }: ContextProviderPropTypes) => {
       });
   };
 
+  const toggleScreenSharing = () => {
+    if (isScreenShOn) {
+      (myVideo.current!.srcObject as MediaStream)
+        .getTracks()
+        .forEach(track => track.stop());
+
+      setIsScreenShOn(!isScreenShOn);
+      setStream(null);
+      myVideo.current!.srcObject = null;
+      return;
+    }
+
+    navigator.mediaDevices
+      .getDisplayMedia({ video: { frameRate: 60 } })
+      .then(currentStream => {
+        setIsScreenShOn(!isVideoOn);
+        setStream(currentStream);
+        myVideo.current!.srcObject = currentStream;
+      });
+  };
+
   return (
     <SocketContext.Provider
       value={{
@@ -153,6 +175,8 @@ const ContextProvider = ({ children }: ContextProviderPropTypes) => {
         toggleMic,
         isVideoOn,
         toggleVideo,
+        isScreenShOn,
+        toggleScreenSharing,
         callEnded,
         me,
         callUser,
