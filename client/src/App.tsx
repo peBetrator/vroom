@@ -9,7 +9,7 @@ export default function App(): React.ReactElement {
     <div className={styles.wrapper}>
       <AppBar className={styles.appBar} position="static" color="inherit">
         <Typography variant="h2" align="center">
-          Video Chat
+          Vroom Web Client
         </Typography>
       </AppBar>
       <VideoPlayer />
