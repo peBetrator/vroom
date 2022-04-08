@@ -1,11 +1,13 @@
 import { Grid, Typography, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { useSocketContext } from '../hooks';
+import { useSocketContext, useUserName } from '../hooks';
 
 export default function VideoPlayer(): React.ReactElement {
-  const { name, callAccepted, myVideo, userVideo, callEnded, stream, call } =
+  const { callAccepted, myVideo, userVideo, callEnded, call } =
     useSocketContext();
+  const { name } = useUserName();
+
   const styles = useStyles();
 
   return (

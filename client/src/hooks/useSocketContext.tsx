@@ -7,6 +7,7 @@ import {
   ContextProviderPropTypes,
   SocketContextValue,
 } from './types';
+import useUserName from './useUserName';
 
 const SocketContext = createContext({} as SocketContextValue);
 
@@ -22,13 +23,14 @@ const ContextProvider = ({ children }: ContextProviderPropTypes) => {
   const [callAccepted, setCallAccepted] = useState(false);
   const [callEnded, setCallEnded] = useState(false);
 
-  const [name, setName] = useState('');
   const [isMicOn, setIsMicOn] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(false);
 
   const myVideo = useRef<HTMLVideoElement | null>(null);
   const userVideo = useRef<HTMLVideoElement | null>(null);
   const connectionRef = useRef<Peer.Instance | null>(null);
+
+  const { name } = useUserName();
 
   useEffect(() => {
     socket.on('me', id => setMe(id));
@@ -147,8 +149,6 @@ const ContextProvider = ({ children }: ContextProviderPropTypes) => {
         myVideo,
         userVideo,
         stream,
-        name,
-        setName,
         isMicOn,
         toggleMic,
         isVideoOn,

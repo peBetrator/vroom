@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Assignment, Phone, PhoneDisabled } from '@material-ui/icons';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import { useSocketContext } from '../hooks';
+import { useSocketContext, useUserName } from '../hooks';
 import { OptionsPropTypes } from './types';
 
 export default function Options({
@@ -19,8 +19,10 @@ export default function Options({
 }: OptionsPropTypes): React.ReactElement {
   const [idToCall, setIdToCall] = useState('');
 
-  const { me, callAccepted, name, setName, callEnded, leaveCall, callUser } =
+  const { me, callAccepted, callEnded, leaveCall, callUser } =
     useSocketContext();
+  const { name, updateName } = useUserName();
+
   const styles = useStyles();
 
   return (
@@ -35,7 +37,7 @@ export default function Options({
               <TextField
                 label="Name"
                 value={name}
-                onChange={e => setName(e.target.value)}
+                onChange={e => updateName(e.target.value)}
                 className={styles.input}
                 fullWidth
               />

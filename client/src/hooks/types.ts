@@ -1,3 +1,8 @@
+export type UseUserNameReturnType = {
+  name: string;
+  updateName: (name: string) => void;
+};
+
 export type ContextProviderPropTypes = {
   children: React.ReactElement;
 };
@@ -15,8 +20,6 @@ export type SocketContextValue = {
   myVideo: React.MutableRefObject<HTMLVideoElement | null>;
   userVideo: React.MutableRefObject<HTMLVideoElement | null>;
   stream: MediaStream | null;
-  name: string;
-  setName: (name: string) => void;
   isMicOn: boolean;
   toggleMic: () => void;
   isVideoOn: boolean;
