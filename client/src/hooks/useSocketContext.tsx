@@ -161,7 +161,7 @@ const ContextProvider = ({ children }: ContextProviderPropTypes) => {
     navigator.mediaDevices
       .getDisplayMedia({ video: { frameRate: 60 } })
       .then(currentStream => {
-        setIsScreenShOn(!isVideoOn);
+        setIsScreenShOn(!isScreenShOn);
         setStream(currentStream);
         myVideo.current!.srcObject = currentStream;
       });
